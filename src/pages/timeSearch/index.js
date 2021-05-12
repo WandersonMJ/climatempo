@@ -74,7 +74,14 @@ function TimeSearch() {
 
     try {
       const response = await getCEP(
-        `http://viacep.com.br/ws/${replacedCep}/json/`
+        `http://viacep.com.br/ws/${replacedCep}/json/`,
+        {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+          },
+          responseType: "json",
+        }
       );
 
       if (response?.erro) {
@@ -96,12 +103,23 @@ function TimeSearch() {
       });
 
       getIp(function (ip) {
-        api.post("/pesquisa", {
-          IP: ip,
-          endereco: response?.logradouro,
-          cidade: response?.localidade,
-          estado: response?.uf,
-        });
+        api.post(
+          "/pesquisa",
+          {
+            IP: ip,
+            endereco: response?.logradouro,
+            cidade: response?.localidade,
+            estado: response?.uf,
+          },
+          {
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Methods":
+                "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+            },
+            responseType: "json",
+          }
+        );
       });
     } catch (err) {
       setHasError("Esse CEP não existe");

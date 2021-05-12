@@ -27,11 +27,21 @@ const Provider = ({ children }) => {
   async function Register({ name, email, password }) {
     // criar a conta
     try {
-      const response = await api.post("/user", {
-        name,
-        email,
-        password,
-      });
+      const response = await api.post(
+        "/user",
+        {
+          name,
+          email,
+          password,
+        },
+        {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+          },
+          responseType: "json",
+        }
+      );
 
       setToken(response?.data?.token);
       history.push("/");
@@ -43,10 +53,20 @@ const Provider = ({ children }) => {
   async function Auth({ email, password }) {
     //fazer requisição passando email e senha
     try {
-      const response = await api.post("/auth/login", {
-        email,
-        password,
-      });
+      const response = await api.post(
+        "/auth/login",
+        {
+          email,
+          password,
+        },
+        {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+          },
+          responseType: "json",
+        }
+      );
 
       setToken(response?.data?.token);
 
@@ -58,7 +78,17 @@ const Provider = ({ children }) => {
 
   async function Logout() {
     try {
-      await api.post("/auth/logout", { token });
+      await api.post(
+        "/auth/logout",
+        { token },
+        {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+          },
+          responseType: "json",
+        }
+      );
       setToken("");
       history.push("/");
     } catch (err) {

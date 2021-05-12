@@ -13,7 +13,13 @@ function History() {
     setData([]);
     setLoading(true);
 
-    const response = await api.get("/pesquisa");
+    const response = await api.get("/pesquisa", {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+      },
+      responseType: "json",
+    });
 
     setLoading(false);
     setData(response?.data);
