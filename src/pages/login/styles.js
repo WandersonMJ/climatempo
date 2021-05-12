@@ -52,8 +52,18 @@ export const WrapperButtons = styled.div`
 
 export const CloudImage = styled.img`
   position: absolute;
-  top: 5%;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%);
 
   height: 200px;
   width: 200px;
+
+  @media screen and (max-width: 1366px) {
+    top: -5%;
+  }
+
+  @media screen and (max-width: 1090px) {
+    top: -100px;
+  }
 `;

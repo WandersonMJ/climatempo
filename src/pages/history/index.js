@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import api from "../../services/api";
+import moment from "moment";
 
 import * as S from "./styles";
 
@@ -6,76 +8,15 @@ function History() {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
 
-  useEffect(() => {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(async () => {
     setData([]);
     setLoading(true);
-    //Fazer a requisição
+
+    const response = await api.get("/pesquisa");
+
     setLoading(false);
-    setData([
-      {
-        id: "1",
-        cep: "18200-240",
-        cidade: "Itapetininga",
-        estado: "SP",
-        data: "04/05/2021",
-      },
-      {
-        id: "2",
-        cep: "18200-240",
-        cidade: "Itapetininga",
-        estado: "SP",
-        data: "04/05/2021",
-      },
-      {
-        id: "3",
-        cep: "18200-240",
-        cidade: "Itapetininga",
-        estado: "SP",
-        data: "04/05/2021",
-      },
-      {
-        id: "4",
-        cep: "18200-240",
-        cidade: "Itapetininga",
-        estado: "SP",
-        data: "04/05/2021",
-      },
-      {
-        id: "5",
-        cep: "18200-240",
-        cidade: "Itapetininga",
-        estado: "SP",
-        data: "04/05/2021",
-      },
-      {
-        id: "6",
-        cep: "18200-240",
-        cidade: "Itapetininga",
-        estado: "SP",
-        data: "04/05/2021",
-      },
-      {
-        id: "7",
-        cep: "18200-240",
-        cidade: "Itapetininga",
-        estado: "SP",
-        data: "04/05/2021",
-      },
-      {
-        id: "8",
-        cep: "18200-240",
-        cidade: "Itapetininga",
-        estado: "SP",
-        data: "04/05/2021",
-      },
-      {
-        id: "9",
-        cep: "18200-240",
-        cidade: "Itapetininga",
-        estado: "SP",
-        data: "04/05/2021",
-      },
-    ]);
+    setData(response?.data);
   }, []);
 
   if (loading && data.length < 1) {
@@ -104,12 +45,15 @@ function History() {
         {data?.map((item) => (
           <S.Item key={item.id}>
             <S.WrapperColumn>
-              <S.Text>{item?.data}</S.Text>
-              <S.Text>{item?.cep}</S.Text>
+              <S.Text>{item?.IP}</S.Text>
+              <S.Text>{item?.endereco}</S.Text>
             </S.WrapperColumn>
             <S.WrapperColumn>
               <S.Text>{item?.cidade}</S.Text>
               <S.Text>{item?.estado}</S.Text>
+            </S.WrapperColumn>
+            <S.WrapperColumn data>
+              <S.Text>{moment(item?.created_at)?.format("DD/MM/YYYY")}</S.Text>
             </S.WrapperColumn>
           </S.Item>
         ))}

@@ -13,6 +13,10 @@ export const Container = styled.form`
   align-items: center;
   justify-content: center;
   flex-direction: column;
+
+  @media screen and (max-width: 1366px) {
+    justify-content: flex-end;
+  }
 `;
 
 export const StyledInput = styled(Input)``;
@@ -48,12 +52,23 @@ export const WrapperButtons = styled.div`
   max-width: 600px;
 
   align-items: center;
+
+  margin-bottom: 20px;
 `;
 
 export const CloudImage = styled.img`
   position: absolute;
-  top: 5%;
+  left: 50%;
+  transform: translate(-50%);
 
   height: 200px;
   width: 200px;
+
+  @media screen and (max-width: 1366px) {
+    top: -5%;
+  }
+
+  @media screen and (max-width: 1090px) {
+    top: -10px;
+  }
 `;

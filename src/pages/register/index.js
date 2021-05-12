@@ -39,39 +39,40 @@ function Register() {
   }, [errors]);
 
   return (
-    <S.Container onSubmit={handleSubmit(onSubmit)}>
+    <>
       <S.CloudImage src={Nuvem} />
+      <S.Container onSubmit={handleSubmit(onSubmit)}>
+        <S.StyledInput
+          type="text"
+          placeholder="Nome"
+          {...register("name", { required: true })}
+          Icon={<AiOutlineIdcard />}
+          error={errors?.name && errors?.name?.message}
+        />
+        <S.StyledInput
+          type="text"
+          placeholder="E-mail"
+          {...register("email", { required: true })}
+          Icon={<HiOutlineMail />}
+          error={errors?.email && errors?.email?.message}
+        />
+        <S.StyledInput
+          type="password"
+          placeholder="Senha"
+          {...register("password")}
+          Icon={<RiLockPasswordLine />}
+          error={errors?.password && errors?.password?.message}
+        />
 
-      <S.StyledInput
-        type="text"
-        placeholder="Nome"
-        {...register("name", { required: true })}
-        Icon={<AiOutlineIdcard />}
-        error={errors?.name && errors?.name?.message}
-      />
-      <S.StyledInput
-        type="text"
-        placeholder="E-mail"
-        {...register("email", { required: true })}
-        Icon={<HiOutlineMail />}
-        error={errors?.email && errors?.email?.message}
-      />
-      <S.StyledInput
-        type="password"
-        placeholder="Senha"
-        {...register("password")}
-        Icon={<RiLockPasswordLine />}
-        error={errors?.password && errors?.password?.message}
-      />
+        <S.WrapperButtons>
+          <S.Link onClick={() => history.push("/login")}>Voltar</S.Link>
 
-      <S.WrapperButtons>
-        <S.Link onClick={() => history.push("/login")}>Voltar</S.Link>
-
-        <Button left={"57%"} type="submit">
-          Cadastrar
-        </Button>
-      </S.WrapperButtons>
-    </S.Container>
+          <Button left={"57%"} type="submit">
+            Cadastrar
+          </Button>
+        </S.WrapperButtons>
+      </S.Container>
+    </>
   );
 }
 

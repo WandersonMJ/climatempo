@@ -67,7 +67,7 @@ export const TableHistory = styled.div`
 
 export const Item = styled.div`
   width: 100%;
-  height: 100px;
+  height: 124px;
   border: 1px solid white;
   background-color: black;
   padding: 14px 36px;
@@ -77,6 +77,12 @@ export const WrapperColumn = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+
+  ${({ data }) =>
+    data &&
+    css`
+      justify-content: flex-start;
+    `}
 `;
 
 export const Text = styled.div`

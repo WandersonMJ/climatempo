@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FaSistrix } from "react-icons/fa";
+import api from "../../services/api";
 
 import Input from "../../components/Input";
 
@@ -9,6 +10,37 @@ function TimeSearch() {
   const [value, setValue] = useState(false);
   const [hasError, setHasError] = useState("");
   const [data, setData] = useState({});
+
+  function getIp(callback) {
+    function response(s) {
+      callback(window.userip);
+
+      s.onload = s.onerror = null;
+      document.body.removeChild(s);
+    }
+
+    function trigger() {
+      window.userip = false;
+
+      var s = document.createElement("script");
+      s.async = true;
+      s.onload = function () {
+        response(s);
+      };
+      s.onerror = function () {
+        response(s);
+      };
+
+      s.src = "https://l2.io/ip.js?var=userip";
+      document.body.appendChild(s);
+    }
+
+    if (/^(interactive|complete)$/i.test(document.readyState)) {
+      trigger();
+    } else {
+      document.addEventListener("DOMContentLoaded", trigger);
+    }
+  }
 
   async function getCEP(url) {
     return await fetch(url).then((res) => res.json());
@@ -61,6 +93,15 @@ function TimeSearch() {
         CEP: response?.cep,
         Bairro: response?.bairro,
         Estado: response?.uf,
+      });
+
+      getIp(function (ip) {
+        api.post("/pesquisa", {
+          IP: ip,
+          endereco: response?.logradouro,
+          cidade: response?.localidade,
+          estado: response?.uf,
+        });
       });
     } catch (err) {
       setHasError("Esse CEP não existe");

@@ -1,6 +1,7 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 
-// import api from "./api";
+import api from "./api";
 
 export const Context = createContext({
   token: "",
@@ -11,42 +12,58 @@ export const Context = createContext({
 });
 
 const Provider = ({ children }) => {
+  const history = useHistory();
   const [token, setToken] = useState("");
 
+  useEffect(() => {
+    localStorage.setItem("TOKEN", token);
+  }, [token]);
+
+  useEffect(() => {
+    const oldToken = localStorage.getItem("TOKEN");
+    setToken(oldToken);
+  }, []);
+
   async function Register({ name, email, password }) {
-    console.log("name, email, password:::", name, email, password);
+    // criar a conta
+    try {
+      const response = await api.post("/user", {
+        name,
+        email,
+        password,
+      });
 
-    //criar a conta
-    // const reponse = await api.post("/user", {
-    //   name,
-    //   email,
-    //   password,
-    // });
-
-    // console.log("reponse:::", reponse);
-    // setToken(response?.data?.token);
-
-    // setToken("a");
+      setToken(response?.data?.token);
+      history.push("/");
+    } catch (err) {
+      throw err;
+    }
   }
 
   async function Auth({ email, password }) {
-    console.log("email, password:::", email, password);
-
     //fazer requisição passando email e senha
-    // const reponse = await api.post("/auth/login", {
-    //   email,
-    //   password,
-    // });
+    try {
+      const response = await api.post("/auth/login", {
+        email,
+        password,
+      });
 
-    // console.log("reponse:::", reponse);
-    // setToken(response?.data?.token);
+      setToken(response?.data?.token);
 
-    setToken("a");
+      history.push("/");
+    } catch (err) {
+      throw err;
+    }
   }
 
   async function Logout() {
-    // await api.post("/auth/logout");
-    setToken("");
+    try {
+      await api.post("/auth/logout", { token });
+      setToken("");
+      history.push("/");
+    } catch (err) {
+      console.log("err:::", err);
+    }
   }
 
   return (

@@ -31,8 +31,12 @@ function Login() {
     defaultValues: {},
   });
   const onSubmit = (data) => {
-    Auth(data);
-    history.push("/");
+    try {
+      Auth(data);
+    } catch (err) {
+      history.push("/login");
+      console.log("err:::", err);
+    }
   };
 
   useEffect(() => {
@@ -40,32 +44,35 @@ function Login() {
   }, [errors]);
 
   return (
-    <S.Container onSubmit={handleSubmit(onSubmit)} autocomplete="off">
+    <>
       <S.CloudImage src={Nuvem} />
+      <S.Container onSubmit={handleSubmit(onSubmit)} autocomplete="off">
+        <S.StyledInput
+          type="text"
+          placeholder="E-mail"
+          Icon={<HiOutlineMail />}
+          {...register("email", { required: true })}
+          error={errors?.email && errors?.email?.message}
+        />
+        <S.StyledInput
+          type="password"
+          placeholder="Senha"
+          Icon={<RiLockPasswordLine />}
+          {...register("password")}
+          error={errors?.password && errors?.password?.message}
+        />
 
-      <S.StyledInput
-        type="text"
-        placeholder="E-mail"
-        Icon={<HiOutlineMail />}
-        {...register("email", { required: true })}
-        error={errors?.email && errors?.email?.message}
-      />
-      <S.StyledInput
-        type="password"
-        placeholder="Senha"
-        Icon={<RiLockPasswordLine />}
-        {...register("password")}
-        error={errors?.password && errors?.password?.message}
-      />
+        <S.WrapperButtons>
+          <Button left={"30%"} type="submit">
+            Entrar
+          </Button>
 
-      <S.WrapperButtons>
-        <Button left={"30%"} type="submit">
-          Entrar
-        </Button>
-
-        <S.Link onClick={() => history.push("/cadastrar")}>Cadastre-se</S.Link>
-      </S.WrapperButtons>
-    </S.Container>
+          <S.Link onClick={() => history.push("/cadastrar")}>
+            Cadastre-se
+          </S.Link>
+        </S.WrapperButtons>
+      </S.Container>
+    </>
   );
 }
 
